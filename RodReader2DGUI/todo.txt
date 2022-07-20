@@ -1,0 +1,89 @@
+
+23:41 23/03/2014
+
+so it looks like I need to do one or more of the following:
+
+1) data smoothing
+	average each data point with its adjacent points to smooth the curve
+	this can be done on the raw data or the adjusted data
+	this may also require some normalization so that recursive smoothing oesnt affect the absolute values
+2) statistical analasys
+	not to repeat readings and take an sd and look for high error in the peak values: impractical
+	at the very least, I need to check for a long run of peak values, and find the centre
+	I could graph the rate of change, smooth that and use the zero crossing points
+
+
+so, things to definately do, in order of priority:
+
+1) look for runs of peak values
+2) make the peak-peak function run from a button
+3) draw the adjusted data as a continuous line
+4) add pan and zoom controls
+5) plot the change in values
+6) add smoothing, selective between raw, adj, delta
+7) best fit on delta
+8) peak2peak on best fit delta
+
+
+03:16 24/04/2014
+
+priority change
+
+
+1) draw the adjusted data as a continuous line 		-done
+2) plot the change in values 				-done.... but just copies input data
+3) make the peak-peak function run from a button, and print values to GUI -done (prints length only)
+4) look for runs of peak values, use centre of run	- done, but need to add tolerance
+5) add pan and zoom controls				- done but clunky
+6) add smoothing, selective between raw, adj, delta	- done: avg of running average in both dirs
+7) best fit on delta
+8) peak2peak on best fit delta
+
+
+14:06 24/04/2014
+
+quickly added rectangles to show hi and lon ranges, plus p2p region
+
+priority:
+
+1) add tolerance to hi/lo ranging
+2) fix delta curve
+3) p2p based on delta
+
+17:09 (after lunch)
+
+tolerance added
+scaled rectangle for drawing p2p regions fixed
+
+
+17:38
+
+tolerance working incorrectly:
+the start point is ok, but the end point it 'tol' less than that.
+need to change so that the same value is used for start and end of peak region
+then I need to do something like a centre of mass calclation
+say, for each point in the region, calculate the average of points prior to that one,
+ and the average of points after it and take the point at which the average before equals the average after
+checking wiki.....
+bleh, no help at all
+lets just get the basic tolerance system working, then graphically investigate the result
+
+
+
+
+19:43
+
+things to do
+
+replace pan slider with joystick
+
+collect all three axis at once
+set toggles for viewing the raw data and processed data
+set toggles for viewing axis
+
+draw rod
+manual point entry and data readout
+zero crossing length
+
+polynomial best fit for detirmining rod length
+

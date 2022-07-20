@@ -1,0 +1,7 @@
+multi peak finding procedure:
+
+1) find a peak absolute value
+2) find the first occurance of peak-tolerance to either side, or the end values if reached
+3) use 3rd order polynomial regression to approximate the peak region and find the approximate peak position and value
+4) repeat the above, excluding all previous peak regions - if a peak region is reached before peak-tol is reached, the current peak is discarded (optionally discarded only if both ends are blocked by previous peak regions
+5) stop when no more peak regions can be found
