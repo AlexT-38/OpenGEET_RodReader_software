@@ -1,6 +1,6 @@
 /** 
 
- OpenGEET Rodreader GUI v1.3
+ OpenGEET Rodreader GUI v0.3
  
  Released under GNU GPL v3
  
@@ -232,7 +232,12 @@ void mprintln(String s){
   
 }
 
-void mprint(String s){
+void mprint(float f){
+ mprint(Float.toString(f)); 
+}
+void mprint(int i){
+ mprint(Integer.toString(i)); 
+}void mprint(String s){
  print(s);
  
  //String newString = textarea1.getText();

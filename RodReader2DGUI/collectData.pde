@@ -88,22 +88,42 @@ void doCalib() {
     break;
   case 2:
     if (serialBuffer.size() > 0) {  //check for data in buffer
-      if (serialBuffer.get(0).equals("SCAN")) {  //check that the arduino has started the command
-        mprintln("Scan has started; calibState: 3");
-        calibState = 3;      //go to next stage (start of scan)
-        serialTimeout = 0;    //reset timeout timer
-        calibPosRaw = new float[points];
-        calibRaw = new PVector[points]; //reset the calib data
-        calibRawSize = 0; //reset the position - should be equal to points when finished
-        calibSensorGain = sensorGain;
-        calibSensorDist = sensorDist;
-        calibTStamp = datetime();
+    /* 2022: 'SCAN' from emulator is missing here. Adding some debug reporting to find out why */
+    /* ok, so .size() is reporting '4' but .get(0) returns an empty string? 
+        yes, size is the number of lines received
+        so if I'm getting empty strings I should just drop them until I run out of strings
+        or one of them is not empty */
+      String buffer = serialBuffer.get(0);
+      
+      while (buffer.length() == 0 && serialBuffer.size() > 2) {
+        mprintln("empty buffer");
+        serialBuffer.remove(0);    //remove the line from the buffer
+        buffer = serialBuffer.get(0);
       }
-      else {
-        mprintln("Didn't get 'SCAN'");
-        calibState = 0;      //got a wrong response to the command, reset the mode
-        mode = 0;
-      }
+      /* final length check */
+      if (buffer.length() > 0)
+      {
+        if (buffer.equals("SCAN")) {  //check that the arduino has started the command
+          mprintln("Scan has started; calibState: 3");
+          calibState = 3;      //go to next stage (start of scan)
+          serialTimeout = 0;    //reset timeout timer
+          calibPosRaw = new float[points];
+          calibRaw = new PVector[points]; //reset the calib data
+          calibRawSize = 0; //reset the position - should be equal to points when finished
+          calibSensorGain = sensorGain;
+          calibSensorDist = sensorDist;
+          calibTStamp = datetime();
+        }
+        else {
+          mprint("Didn't get 'SCAN': '");
+          mprint(buffer);    //print the received buffer
+          mprintln("'");
+          mprintln(serialBuffer.size());
+          
+          calibState = 0;      //got a wrong response to the command, reset the mode
+          mode = 0;
+        }
+      } /* end final length check */
       serialBuffer.remove(0);    //remove the line from the buffer
     } 
     else {
